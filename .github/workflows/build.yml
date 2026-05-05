@@ -1,18 +1,20 @@
-name: Build Eidolon
+name: Build SkinViewer (Eidolon)
 on: workflow_dispatch
 env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true  # 修复 Node.js 20 报错
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
-          repository: edayot/eidolon
+          repository: bingling-sama/SkinViewer
           ref: main
+      - name: Install system dependencies
+        run: sudo apt-get update && sudo apt-get install -y libosmesa6-dev
       - uses: dtolnay/rust-toolchain@stable
       - run: cargo build --release
       - uses: actions/upload-artifact@v4
         with:
-          name: eidolonmc-linux-x86_64
-          path: target/release/eidolonmc
+          name: skinviewer-linux-x86_64
+          path: target/release/skinviewer
