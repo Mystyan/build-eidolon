@@ -1,5 +1,7 @@
 name: Build Eidolon
 on: workflow_dispatch
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true  # 修复 Node.js 20 报错
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -7,6 +9,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: edayot/eidolon
+          ref: main
       - uses: dtolnay/rust-toolchain@stable
       - run: cargo build --release
       - uses: actions/upload-artifact@v4
