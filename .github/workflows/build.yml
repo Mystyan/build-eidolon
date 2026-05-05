@@ -1,4 +1,4 @@
-name: Build SkinViewer (Eidolon)
+name: Build Eidolon
 on: workflow_dispatch
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
@@ -13,8 +13,23 @@ jobs:
       - name: Install system dependencies
         run: sudo apt-get update && sudo apt-get install -y libosmesa6-dev
       - uses: dtolnay/rust-toolchain@stable
-      - run: cargo build --release
+      - name: Build
+        run: cargo build --release
+      - name: Check binary name
+        run: ls -lah target/release/
+      - name: Rename and prepare artifact
+        # 把编译生成的可执行文件统一改名为 eidolonmc，方便上传
+        run: |
+          if [ -f target/release/eidolonmc ]; then
+            cp target/release/eidolonmc eidolonmc
+          elif [ -f target/release/skinviewer ]; then
+            cp target/release/skinviewer eidolonmc
+          else
+            # 如果名字都不对，列出文件让你手动检查
+            find target/release -maxdepth 1 -type f -executable
+            exit 1
+          fi
       - uses: actions/upload-artifact@v4
         with:
-          name: skinviewer-linux-x86_64
-          path: target/release/skinviewer
+          name: eidolonmc-linux-x86_64
+          path: eidolonmc
