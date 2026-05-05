@@ -1,10 +1,10 @@
-name: Build Eidolon
+name: Build Eidolon (for older GLIBC)
 on: workflow_dispatch
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v4
         with:
@@ -21,5 +21,5 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: eidolon-linux-x86_64
+          name: eidolon-linux-glibc2.31
           path: target/release/eidolon
