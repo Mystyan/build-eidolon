@@ -1,0 +1,15 @@
+name: Build Eidolon
+on: workflow_dispatch
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: edayot/eidolon
+      - uses: dtolnay/rust-toolchain@stable
+      - run: cargo build --release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: eidolonmc-linux-x86_64
+          path: target/release/eidolonmc
